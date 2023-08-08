@@ -5,30 +5,6 @@ import numpy as np
 import plotly.graph_objects as go
 
 
-#初期化
-battle_point_me_sum0 = 0
-battle_point_me_sum1 = 0
-battle_point_me_sum2 = 0
-battle_point_me_sum3 = 0
-battle_point_me_sum4 = 0
-battle_point_me_sum5 = 0
-battle_point_me_sum6 = 0
-battle_point_me_sum7 = 0
-battle_point_me_sum8 = 0
-battle_point_me_sum9 = 0
-battle_point_me_sum0_molded = []
-battle_point_me_sum1_molded = []
-battle_point_me_sum2_molded = []
-battle_point_me_sum3_molded = []
-battle_point_me_sum4_molded = []
-battle_point_me_sum5_molded = []
-battle_point_me_sum6_molded = []
-battle_point_me_sum7_molded = []
-battle_point_me_sum8_molded = []
-battle_point_me_sum9_molded = []
-battle_point_me_sum_molded = []
-selected_data = []
-selected_data = []
 
 #初期集団の生成
 #[x_1, x_2, x_3]
@@ -60,7 +36,17 @@ print("\n")
 #~.iat[列,行]
 print(evaluation_value.iat[0,1])
 
-
+#初期化
+battle_point_me_sum0 = 0
+battle_point_me_sum1 = 0
+battle_point_me_sum2 = 0
+battle_point_me_sum3 = 0
+battle_point_me_sum4 = 0
+battle_point_me_sum5 = 0
+battle_point_me_sum6 = 0
+battle_point_me_sum7 = 0
+battle_point_me_sum8 = 0
+battle_point_me_sum9 = 0
 #評価関数
 for i in range(10):
     for j in range(9):
@@ -164,9 +150,107 @@ print(sorted_data)
 #選択
 selected_data = sorted_data[:5]
 print("\n")
-print("This is five selcted party.")
+print("This is five selcted parties.")
 print(selected_data)
 
 #交叉
+#勝ち抜いた5つのパーティを各変数に代入
+ranking_1_party = party.iloc[selected_data[0][1]]
+ranking_2_party = party.iloc[selected_data[1][1]]
+ranking_3_party = party.iloc[selected_data[2][1]]
+ranking_4_party = party.iloc[selected_data[3][1]]
+ranking_5_party = party.iloc[selected_data[4][1]]
+
+print("This is five selcted detail parties.")
+print(ranking_1_party)
+print(ranking_2_party)
+print(ranking_3_party)
+print(ranking_4_party)
+print(ranking_5_party)
+
+ranking_party_list = [
+    [ranking_1_party.pokemon01, ranking_1_party.pokemon02, ranking_1_party.pokemon03],
+    [ranking_2_party.pokemon01, ranking_2_party.pokemon02, ranking_2_party.pokemon03],
+    [ranking_3_party.pokemon01, ranking_3_party.pokemon02, ranking_3_party.pokemon03],
+    [ranking_4_party.pokemon01, ranking_4_party.pokemon02, ranking_4_party.pokemon03],
+    [ranking_5_party.pokemon01, ranking_5_party.pokemon02, ranking_5_party.pokemon03]
+]
+print("This is five selcted detail parties listed.")
+print(ranking_party_list)
+
+#初期化
+crossover_list_append = []
+#ループ
+for i in range(5):
+    cross1 = random.randint(0,4)
+    cross2 = random.randint(0,4)
+    cross1_list = ranking_party_list[cross1]
+    cross2_list = ranking_party_list[cross2]
+    print(cross1_list)
+    print(cross2_list)
+    cross1_element1 = 0
+    cross1_element2 = random.randint(1,2)
+    cross2_element1 = random.randint(0,2)
+    cross1_element1_list = cross1_list[cross1_element1]
+    cross1_element2_list = cross1_list[cross1_element2]
+    cross2_element1_list = cross2_list[cross2_element1]
+    crossover_list = [cross1_element1_list, cross1_element2_list, cross2_element1_list]
+    crossover_list_append.append(crossover_list)
+
+print(crossover_list_append)
+
+crossover_list_append.extend(ranking_party_list)
+print("\n")
+print("This is a list of ten parties crossovered.")
+print(crossover_list_append)
+
 
 #突然変異
+probability = 0.5
+rest_of_probability = 1 - probability
+for i in range(10):
+    mutation_party = crossover_list_append[i]
+    flag = np.random.choice([0,1], p=[probability, rest_of_probability])
+    if flag==0:
+        change_element = random.randint(0,2)
+        choice_element = random.randint(0,5)
+        mutation_party[change_element] = choice_element
+    elif flag==1:
+        pass
+
+print("This is a list of ten parties mutated.")
+print(crossover_list_append)
+
+#初期化
+pokemon1 = []
+pokemon2 = []
+pokemon3 = []
+
+for i in range(10):
+    pokemon1_element = crossover_list_append[i][0]
+    pokemon1.append(pokemon1_element)
+for i in range(10):
+    pokemon2_element = crossover_list_append[i][1]
+    pokemon2.append(pokemon2_element)
+for i in range(10):
+    pokemon3_element = crossover_list_append[i][2]
+    pokemon3.append(pokemon3_element)
+
+print("pokemon1 list")
+print(pokemon1)
+print("pokemon2 list")
+print(pokemon2)
+print("pokemon3 list")
+print(pokemon3)
+
+result = pd.DataFrame(
+    data={'party_id': np.array([0,1,2,3,4,5,6,7,8,9]),
+            'pokemon01': np.array(pokemon1), 
+            'pokemon02': np.array(pokemon2),
+            'pokemon03': np.array(pokemon3)
+        }
+)
+
+#完成
+print("complete")
+print(result)
