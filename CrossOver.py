@@ -7,6 +7,8 @@ import plotly.graph_objects as go
 
 #パーティ数(偶数のみ)
 number_of_party = 30
+#世代
+genaration = 10
 
 def GA(party, evaluation_value):
 #初期化
@@ -247,7 +249,6 @@ party = pd.DataFrame(
         }
 )
 
-
 #評価表
 evaluation_value = pd.DataFrame(
     data={'0': np.array([0,-2,1,0,0,1]), 
@@ -267,7 +268,7 @@ element_3_list = []
 element_4_list = []
 element_5_list = []
 gen = 1
-while gen <=500:
+while gen <= genaration:
     party, element_0, element_1, element_2, element_3, element_4, element_5 = GA(party, evaluation_value)
     gen = gen + 1
     element_0_list.append(element_0)
@@ -279,8 +280,8 @@ while gen <=500:
 
 print(party)
 
-
-gen_number = list(range(1,501,1))
+graph_gen = genaration + 1
+gen_number = list(range(1,graph_gen,1))
 
 fig = go.Figure()
 
