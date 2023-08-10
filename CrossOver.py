@@ -7,20 +7,12 @@ import plotly.graph_objects as go
 
 
 def GA(party, evaluation_value):
-    #初期化
-    battle_point_me_sum0 = 0
-    battle_point_me_sum1 = 0
-    battle_point_me_sum2 = 0
-    battle_point_me_sum3 = 0
-    battle_point_me_sum4 = 0
-    battle_point_me_sum5 = 0
-    battle_point_me_sum6 = 0
-    battle_point_me_sum7 = 0
-    battle_point_me_sum8 = 0
-    battle_point_me_sum9 = 0
+#初期化
+    battle_point_me_sum_molded = []
     #評価関数
     for i in range(10):
-        for j in range(9):
+        battle_point_me_sum = 0
+        for j in range(10):
             if i==j:
                 pass
             elif i!=j:
@@ -60,54 +52,13 @@ def GA(party, evaluation_value):
                 number3 = number31 + number32 + number33
                 print(f"number31: {number31}, number32: {number32}, number33: {number33}")
                 print(f"pokemon3_number_of_wins: {number3}")
-                battle_point_me = number1 + number2 + number3
-                print(f"me_number_of_wins: {battle_point_me}")
+                all_list = [number1, number2, number3]
+                top_second_list = sorted(all_list ,reverse=True)
+                battle_point_me = top_second_list[0] + top_second_list[1]
+                print(f"This is a battle_point: {battle_point_me}")
+                battle_point_me_sum = battle_point_me_sum + battle_point_me
+        battle_point_me_sum_molded.append([battle_point_me_sum, i])
 
-                if i==0:
-                    battle_point_me_sum0 =  battle_point_me_sum0 + battle_point_me
-                elif i==1:
-                    battle_point_me_sum1 =  battle_point_me_sum1 + battle_point_me
-                elif i==2:
-                    battle_point_me_sum2 =  battle_point_me_sum2 + battle_point_me
-                elif i==3:
-                    battle_point_me_sum3 =  battle_point_me_sum3 + battle_point_me
-                elif i==4:
-                    battle_point_me_sum4 =  battle_point_me_sum4 + battle_point_me
-                elif i==5:
-                    battle_point_me_sum5 =  battle_point_me_sum5 + battle_point_me
-                elif i==6:
-                    battle_point_me_sum6 =  battle_point_me_sum6 + battle_point_me
-                elif i==7:
-                    battle_point_me_sum7 =  battle_point_me_sum7 + battle_point_me
-                elif i==8:
-                    battle_point_me_sum8 =  battle_point_me_sum8 + battle_point_me
-                elif i==9:
-                    battle_point_me_sum9 =  battle_point_me_sum9 + battle_point_me
-
-                battle_point_me_sum0_molded = [battle_point_me_sum0, 0]
-                battle_point_me_sum1_molded = [battle_point_me_sum1, 1]
-                battle_point_me_sum2_molded = [battle_point_me_sum2, 2]
-                battle_point_me_sum3_molded = [battle_point_me_sum3, 3]
-                battle_point_me_sum4_molded = [battle_point_me_sum4, 4]
-                battle_point_me_sum5_molded = [battle_point_me_sum5, 5]
-                battle_point_me_sum6_molded = [battle_point_me_sum6, 6]
-                battle_point_me_sum7_molded = [battle_point_me_sum7, 7]
-                battle_point_me_sum8_molded = [battle_point_me_sum8, 8]
-                battle_point_me_sum9_molded = [battle_point_me_sum9, 9]
-
-    #集計
-    battle_point_me_sum_molded = [
-        battle_point_me_sum0_molded,
-        battle_point_me_sum1_molded,
-        battle_point_me_sum2_molded,
-        battle_point_me_sum3_molded,
-        battle_point_me_sum4_molded,
-        battle_point_me_sum5_molded,
-        battle_point_me_sum6_molded,
-        battle_point_me_sum7_molded,
-        battle_point_me_sum8_molded,
-        battle_point_me_sum9_molded
-    ]
     print("\n")
     print("This is a battle point of ten party.")
     print(battle_point_me_sum_molded)
@@ -132,7 +83,7 @@ def GA(party, evaluation_value):
     ranking_4_party = party.iloc[selected_data[3][1]]
     ranking_5_party = party.iloc[selected_data[4][1]]
 
-    print("This is five selcted detail parties.")
+    print("This is five selcted parties detail.")
     print(ranking_1_party)
     print(ranking_2_party)
     print(ranking_3_party)
@@ -157,8 +108,6 @@ def GA(party, evaluation_value):
         cross2 = random.randint(0,4)
         cross1_list = ranking_party_list[cross1]
         cross2_list = ranking_party_list[cross2]
-        print(cross1_list)
-        print(cross2_list)
         cross1_element1 = 0
         cross1_element2 = random.randint(1,2)
         cross2_element1 = random.randint(0,2)
@@ -168,19 +117,22 @@ def GA(party, evaluation_value):
         crossover_list = [cross1_element1_list, cross1_element2_list, cross2_element1_list]
         crossover_list_append.append(crossover_list)
 
+    print("\n")
+    print("new crossovered five parties.")
     print(crossover_list_append)
 
-    crossover_list_append.extend(ranking_party_list)
+    ranking_party_list.extend(crossover_list_append)
     print("\n")
     print("This is a list of ten parties crossovered.")
-    print(crossover_list_append)
+    print(ranking_party_list)
 
 
     #突然変異
     probability = 0.5
     rest_of_probability = 1 - probability
-    for i in range(10):
-        mutation_party = crossover_list_append[i]
+    for i in range(5):
+        change_i = 5 + i
+        mutation_party = ranking_party_list[change_i]
         flag = np.random.choice([0,1], p=[probability, rest_of_probability])
         if flag==0:
             change_element = random.randint(0,2)
@@ -190,29 +142,23 @@ def GA(party, evaluation_value):
             pass
 
     print("This is a list of ten parties mutated.")
-    print(crossover_list_append)
+    print(ranking_party_list)
 
+    #結果のdf化
     #初期化
     pokemon1 = []
     pokemon2 = []
     pokemon3 = []
 
     for i in range(10):
-        pokemon1_element = crossover_list_append[i][0]
+        pokemon1_element = ranking_party_list[i][0]
         pokemon1.append(pokemon1_element)
     for i in range(10):
-        pokemon2_element = crossover_list_append[i][1]
+        pokemon2_element = ranking_party_list[i][1]
         pokemon2.append(pokemon2_element)
     for i in range(10):
-        pokemon3_element = crossover_list_append[i][2]
+        pokemon3_element = ranking_party_list[i][2]
         pokemon3.append(pokemon3_element)
-
-    print("pokemon1 list")
-    print(pokemon1)
-    print("pokemon2 list")
-    print(pokemon2)
-    print("pokemon3 list")
-    print(pokemon3)
 
     result = pd.DataFrame(
         data={'party_id': np.array([0,1,2,3,4,5,6,7,8,9]),
@@ -222,16 +168,85 @@ def GA(party, evaluation_value):
             }
     )
 
+    #初期化
+    pokemon_graph = []
+    for i in range(5):
+        pokemon1_element_graph = ranking_party_list[i][0]
+        pokemon_graph.append(pokemon1_element_graph)
+    for i in range(5):
+        pokemon2_element_graph = ranking_party_list[i][1]
+        pokemon_graph.append(pokemon2_element_graph)
+    for i in range(5):
+        pokemon3_element_graph = ranking_party_list[i][2]
+        pokemon_graph.append(pokemon3_element_graph)
+
+    print("\n")
+    print(pokemon_graph)
+
+    #初期化
+    element_0_sum = 0
+    element_1_sum = 0
+    element_2_sum = 0
+    element_3_sum = 0
+    element_4_sum = 0
+    element_5_sum = 0
+    for i in range(15):
+        element = pokemon_graph[i]
+        if element==0:
+            element_0_sum = element_0_sum + 1
+        elif element==1:
+            element_1_sum = element_1_sum + 1
+        elif element==2:
+            element_2_sum = element_2_sum + 1
+        elif element==3:
+            element_3_sum = element_3_sum + 1
+        elif element==4:
+            element_4_sum = element_4_sum + 1
+        elif element==5:
+            element_5_sum = element_5_sum + 1
+
+    graph_list = [element_0_sum, element_1_sum, element_3_sum, element_4_sum, element_5_sum]
+
+    print(f"element_0_sum: {element_0_sum}")
+    print(f"element_1_sum: {element_1_sum}")
+    print(f"element_2_sum: {element_2_sum}")
+    print(f"element_3_sum: {element_3_sum}")
+    print(f"element_4_sum: {element_4_sum}")
+    print(f"element_5_sum: {element_5_sum}")
+
     #完成
     print("complete")
     print(result)
+    return result, element_0_sum, element_1_sum, element_2_sum, element_3_sum, element_4_sum, element_5_sum
 
-    return result
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #初期集団の生成
 #[x_1, x_2, x_3]
-print("This is a dataframe of ten party.")
 party = pd.DataFrame(
     data={'party_id': np.array([0,1,2,3,4,5,6,7,8,9]),
             'pokemon01': np.array([random.randint(0,5) for _ in range(10)]), 
@@ -242,7 +257,6 @@ party = pd.DataFrame(
 
 
 #評価表
-print("This is a dataframe of evaluation value.")
 evaluation_value = pd.DataFrame(
     data={'0': np.array([0,-2,1,0,0,1]), 
             '1': np.array([1,-1,-1,1,0,0]),
@@ -253,9 +267,96 @@ evaluation_value = pd.DataFrame(
         }
 )
 
+#main関数
+element_0_list = []
+element_1_list = []
+element_2_list = []
+element_3_list = []
+element_4_list = []
+element_5_list = []
 gen = 1
 while gen <=1000:
-    party = GA(party, evaluation_value)
+    party, element_0, element_1, element_2, element_3, element_4, element_5 = GA(party, evaluation_value)
     gen = gen + 1
+    element_0_list.append(element_0)
+    element_1_list.append(element_1)
+    element_2_list.append(element_2)
+    element_3_list.append(element_3)
+    element_4_list.append(element_4)
+    element_5_list.append(element_5)
 
 print(party)
+
+
+gen_number = list(range(1,1001,1))
+
+fig = go.Figure()
+
+fig.add_trace(
+    go.Scatter(x = gen_number, #X_label
+               y = element_0_list, #y_label
+              text = "No.0 ポケモン", #
+              mode = 'lines', #折れ線グラフ
+              name = 'No.0', #line_name
+              line=dict(color='rgb(239, 85, 59)', width=4, dash='solid') #line_type_detail      
+    )
+)
+fig.add_trace(
+    go.Scatter(x = gen_number,
+               y = element_1_list,
+              text = "No.1 ポケモン",
+              mode = 'lines',
+              name = 'No.1',
+              line=dict(color='rgb(25, 211, 243)', width=4, dash='solid')  
+              
+    )
+)
+
+fig.add_trace(
+    go.Scatter(x = gen_number,
+               y = element_2_list,
+              text = "No.2 ポケモン",
+              mode = 'lines',
+              line=dict(color='rgb(188, 189, 34)', width=4, dash='solid'),
+              name = 'No.2'
+              
+    )
+)
+
+fig.add_trace(
+    go.Scatter(x = gen_number,
+               y = element_3_list,
+              text = "No.3 ポケモン",
+              mode = 'lines',
+              line=dict(color='firebrick', width=4, dash='solid'),
+              name = 'No.3'
+    )
+)
+
+fig.add_trace(
+    go.Scatter(x = gen_number,
+               y = element_4_list,
+              text = "No.4 ポケモン",
+              mode = 'lines',
+              line=dict(color='rgb(48, 73, 125)', width=4, dash='solid'),
+              name = 'No.4'
+    )
+)
+
+fig.add_trace(
+    go.Scatter(x = gen_number,
+               y = element_5_list,
+              text = "No.5 ポケモン",
+              mode = 'lines',
+              line=dict(color='rgb(255, 185, 0)', width=4, dash='solid'),
+              name = 'No.5'
+    )
+)
+
+fig.update_layout(
+    xaxis_title = 'Generation',
+    yaxis_title = 'Number of each pokemons'
+)
+
+    
+fig.show()
