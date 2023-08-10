@@ -6,9 +6,9 @@ import plotly.graph_objects as go
 #~.iat[列,行]
 
 #パーティ数(偶数のみ)
-number_of_party = 50
+number_of_party = 10
 #世代
-genaration = 50
+genaration = 10
 
 def GA(party, evaluation_value):
 #初期化
@@ -278,8 +278,20 @@ while gen <= genaration:
     element_4_list.append(element_4)
     element_5_list.append(element_5)
 
-print(party)
-
+#相関係数を求める
+df_crr_element = pd.DataFrame(
+    data = {
+        'element_0_list': np.array(element_0_list),
+        'element_1_list': np.array(element_1_list),
+        'element_2_list': np.array(element_2_list),
+        'element_3_list': np.array(element_3_list),
+        'element_4_list': np.array(element_4_list),
+        'element_5_list': np.array(element_5_list),
+    }
+)
+corr_result= df_crr_element.corr()
+print(corr_result)
+#plotlyのグラフ描画
 graph_gen = genaration + 1
 gen_number = list(range(1,graph_gen,1))
 
