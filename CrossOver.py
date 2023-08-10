@@ -5,14 +5,16 @@ import numpy as np
 import plotly.graph_objects as go
 #~.iat[列,行]
 
+#パーティ数(偶数のみ)
+number_of_party = 30
 
 def GA(party, evaluation_value):
 #初期化
     battle_point_me_sum_molded = []
     #評価関数
-    for i in range(10):
+    for i in range(number_of_party):
         battle_point_me_sum = 0
-        for j in range(10):
+        for j in range(number_of_party):
             if i==j:
                 pass
             elif i!=j:
@@ -70,42 +72,33 @@ def GA(party, evaluation_value):
     print(sorted_data)
 
     #選択
-    selected_data = sorted_data[:5]
+    select = int(number_of_party / 2)
+    selected_data = sorted_data[:select]
     print("\n")
     print("This is five selcted parties.")
     print(selected_data)
 
     #交叉
     #勝ち抜いた5つのパーティを各変数に代入
-    ranking_1_party = party.iloc[selected_data[0][1]]
-    ranking_2_party = party.iloc[selected_data[1][1]]
-    ranking_3_party = party.iloc[selected_data[2][1]]
-    ranking_4_party = party.iloc[selected_data[3][1]]
-    ranking_5_party = party.iloc[selected_data[4][1]]
+    ranking_party_list = []
+    for i in range (select):
+        ranking_party = [
+            party.iloc[selected_data[i][1]].pokemon01,
+            party.iloc[selected_data[i][1]].pokemon02,
+            party.iloc[selected_data[i][1]].pokemon03
+        ]
+        ranking_party_list.append(ranking_party)
 
-    print("This is five selcted parties detail.")
-    print(ranking_1_party)
-    print(ranking_2_party)
-    print(ranking_3_party)
-    print(ranking_4_party)
-    print(ranking_5_party)
-
-    ranking_party_list = [
-        [ranking_1_party.pokemon01, ranking_1_party.pokemon02, ranking_1_party.pokemon03],
-        [ranking_2_party.pokemon01, ranking_2_party.pokemon02, ranking_2_party.pokemon03],
-        [ranking_3_party.pokemon01, ranking_3_party.pokemon02, ranking_3_party.pokemon03],
-        [ranking_4_party.pokemon01, ranking_4_party.pokemon02, ranking_4_party.pokemon03],
-        [ranking_5_party.pokemon01, ranking_5_party.pokemon02, ranking_5_party.pokemon03]
-    ]
     print("This is five selcted detail parties listed.")
     print(ranking_party_list)
 
     #初期化
     crossover_list_append = []
+    rand_select = int(select - 1)
     #ループ
-    for i in range(5):
-        cross1 = random.randint(0,4)
-        cross2 = random.randint(0,4)
+    for i in range(select):
+        cross1 = random.randint(0,rand_select)
+        cross2 = random.randint(0,rand_select)
         cross1_list = ranking_party_list[cross1]
         cross2_list = ranking_party_list[cross2]
         cross1_element1 = 0
@@ -130,7 +123,7 @@ def GA(party, evaluation_value):
     #突然変異
     probability = 0.5
     rest_of_probability = 1 - probability
-    for i in range(5):
+    for i in range(select):
         change_i = 5 + i
         mutation_party = ranking_party_list[change_i]
         flag = np.random.choice([0,1], p=[probability, rest_of_probability])
@@ -150,33 +143,34 @@ def GA(party, evaluation_value):
     pokemon2 = []
     pokemon3 = []
 
-    for i in range(10):
+    for i in range(number_of_party):
         pokemon1_element = ranking_party_list[i][0]
         pokemon1.append(pokemon1_element)
-    for i in range(10):
+    for i in range(number_of_party):
         pokemon2_element = ranking_party_list[i][1]
         pokemon2.append(pokemon2_element)
-    for i in range(10):
+    for i in range(number_of_party):
         pokemon3_element = ranking_party_list[i][2]
         pokemon3.append(pokemon3_element)
 
     result = pd.DataFrame(
-        data={'party_id': np.array([0,1,2,3,4,5,6,7,8,9]),
-                'pokemon01': np.array(pokemon1), 
+        data={'party_id': np.array([_ for _ in range(number_of_party)]),
+                'pokemon01': np.array(pokemon1),
                 'pokemon02': np.array(pokemon2),
                 'pokemon03': np.array(pokemon3)
             }
     )
 
+    #グラフ生成
     #初期化
     pokemon_graph = []
-    for i in range(5):
+    for i in range(select):
         pokemon1_element_graph = ranking_party_list[i][0]
         pokemon_graph.append(pokemon1_element_graph)
-    for i in range(5):
+    for i in range(select):
         pokemon2_element_graph = ranking_party_list[i][1]
         pokemon_graph.append(pokemon2_element_graph)
-    for i in range(5):
+    for i in range(select):
         pokemon3_element_graph = ranking_party_list[i][2]
         pokemon_graph.append(pokemon3_element_graph)
 
@@ -204,8 +198,6 @@ def GA(party, evaluation_value):
             element_4_sum = element_4_sum + 1
         elif element==5:
             element_5_sum = element_5_sum + 1
-
-    graph_list = [element_0_sum, element_1_sum, element_3_sum, element_4_sum, element_5_sum]
 
     print(f"element_0_sum: {element_0_sum}")
     print(f"element_1_sum: {element_1_sum}")
@@ -248,10 +240,10 @@ def GA(party, evaluation_value):
 #初期集団の生成
 #[x_1, x_2, x_3]
 party = pd.DataFrame(
-    data={'party_id': np.array([0,1,2,3,4,5,6,7,8,9]),
-            'pokemon01': np.array([random.randint(0,5) for _ in range(10)]), 
-            'pokemon02': np.array([random.randint(0,5) for _ in range(10)]),
-            'pokemon03': np.array([random.randint(0,5) for _ in range(10)])
+    data={'party_id': np.array([_ for _ in range(number_of_party)]),
+            'pokemon01': np.array([random.randint(0,5) for _ in range(number_of_party)]), 
+            'pokemon02': np.array([random.randint(0,5) for _ in range(number_of_party)]),
+            'pokemon03': np.array([random.randint(0,5) for _ in range(number_of_party)])
         }
 )
 
@@ -275,7 +267,7 @@ element_3_list = []
 element_4_list = []
 element_5_list = []
 gen = 1
-while gen <=1000:
+while gen <=500:
     party, element_0, element_1, element_2, element_3, element_4, element_5 = GA(party, evaluation_value)
     gen = gen + 1
     element_0_list.append(element_0)
@@ -288,7 +280,7 @@ while gen <=1000:
 print(party)
 
 
-gen_number = list(range(1,1001,1))
+gen_number = list(range(1,501,1))
 
 fig = go.Figure()
 
