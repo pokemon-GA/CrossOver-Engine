@@ -5,10 +5,11 @@ import numpy as np
 import plotly.graph_objects as go
 #~.iat[列,行]
 
+############初期条件の設定############
 #パーティ数(偶数のみ)
-number_of_party = 10
+number_of_party = 50
 #世代
-genaration = 5
+genaration = 50
 
 def GA(party, evaluation_value):
 #初期化
@@ -370,5 +371,5 @@ fig.update_layout(
     ),
 )
 
-    
+
 fig.show()
