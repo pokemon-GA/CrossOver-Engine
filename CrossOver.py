@@ -8,7 +8,7 @@ import plotly.graph_objects as go
 #パーティ数(偶数のみ)
 number_of_party = 10
 #世代
-genaration = 10
+genaration = 5
 
 def GA(party, evaluation_value):
 #初期化
@@ -291,6 +291,7 @@ df_crr_element = pd.DataFrame(
 )
 corr_result= df_crr_element.corr()
 print(corr_result)
+print(type(corr_result))
 #plotlyのグラフ描画
 graph_gen = genaration + 1
 gen_number = list(range(1,graph_gen,1))
@@ -360,7 +361,13 @@ fig.add_trace(
 
 fig.update_layout(
     xaxis_title = 'Generation',
-    yaxis_title = 'Number of each pokemons'
+    yaxis_title = 'Number of each pokemons',
+    title=dict(text='<b>Optimal Solution for Pokémon Parties',
+                font=dict(size=26,
+                    color='grey'),
+                x=0.5,
+                xanchor='center',
+    ),
 )
 
     
