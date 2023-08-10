@@ -298,7 +298,7 @@ fig.add_trace(
               text = "No.0 ポケモン", #
               mode = 'lines', #折れ線グラフ
               name = 'No.0', #line_name
-              line=dict(color='rgb(239, 85, 59)', width=4, dash='solid') #line_type_detail      
+              line=dict(color='rgb(239, 85, 59)', width=1, dash='solid') #line_type_detail      
     )
 )
 fig.add_trace(
@@ -307,7 +307,7 @@ fig.add_trace(
               text = "No.1 ポケモン",
               mode = 'lines',
               name = 'No.1',
-              line=dict(color='rgb(25, 211, 243)', width=4, dash='solid')  
+              line=dict(color='rgb(25, 211, 243)', width=1, dash='solid')  
               
     )
 )
@@ -317,7 +317,7 @@ fig.add_trace(
                y = element_2_list,
               text = "No.2 ポケモン",
               mode = 'lines',
-              line=dict(color='rgb(188, 189, 34)', width=4, dash='solid'),
+              line=dict(color='rgb(188, 189, 34)', width=1, dash='solid'),
               name = 'No.2'
               
     )
@@ -328,7 +328,7 @@ fig.add_trace(
                y = element_3_list,
               text = "No.3 ポケモン",
               mode = 'lines',
-              line=dict(color='firebrick', width=4, dash='solid'),
+              line=dict(color='firebrick', width=1, dash='solid'),
               name = 'No.3'
     )
 )
@@ -338,7 +338,7 @@ fig.add_trace(
                y = element_4_list,
               text = "No.4 ポケモン",
               mode = 'lines',
-              line=dict(color='rgb(48, 73, 125)', width=4, dash='solid'),
+              line=dict(color='rgb(48, 73, 125)', width=1, dash='solid'),
               name = 'No.4'
     )
 )
@@ -348,7 +348,7 @@ fig.add_trace(
                y = element_5_list,
               text = "No.5 ポケモン",
               mode = 'lines',
-              line=dict(color='rgb(255, 185, 0)', width=4, dash='solid'),
+              line=dict(color='rgb(255, 185, 0)', width=1, dash='solid'),
               name = 'No.5'
     )
 )
