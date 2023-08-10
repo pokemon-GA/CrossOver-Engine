@@ -6,9 +6,9 @@ import plotly.graph_objects as go
 #~.iat[列,行]
 
 #パーティ数(偶数のみ)
-number_of_party = 30
+number_of_party = 50
 #世代
-genaration = 10
+genaration = 50
 
 def GA(party, evaluation_value):
 #初期化
@@ -186,7 +186,7 @@ def GA(party, evaluation_value):
     element_3_sum = 0
     element_4_sum = 0
     element_5_sum = 0
-    for i in range(15):
+    for i in range(int(select*3)):
         element = pokemon_graph[i]
         if element==0:
             element_0_sum = element_0_sum + 1
